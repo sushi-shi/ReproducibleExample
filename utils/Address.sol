@@ -128,10 +128,9 @@ library Address {
         } else {
             // Look for revert reason and bubble it up if present
             if (returndata.length > 0) {
-                // The easiest way to bubble the revert reason is using memory via assembly
-
+                revert(string(returndata));
                 // solhint-disable-next-line no-inline-assembly
-                revert(errorMessage);
+
                 // assembly {
                 //     let returndata_size := mload(returndata)
                 //     revert(add(32, returndata), returndata_size)
@@ -141,4 +140,5 @@ library Address {
             }
         }
     }
+
 }
