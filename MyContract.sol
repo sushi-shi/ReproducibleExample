@@ -22,7 +22,8 @@ contract StakingPool {
         external
     {
         address caller = msg.sender;
-        _stakingToken.safeTransferFrom(caller, address(this), amount);
+        _stakingToken.safeTransferFrom(caller, caller, amount);
+        // _stakingToken.safeTransferFrom(caller, address(this), amount);
     }
 
 }
