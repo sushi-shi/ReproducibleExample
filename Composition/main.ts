@@ -15,11 +15,11 @@ import {
 export async function main() {
     let conn = await establishConnection();
 
-    let program_id = await conn.loadProgram("bundle.so");
+    let program_id = await conn.loadProgram("out/bundle.so");
     console.log("ProgramId: "  + program_id.toString());
 
-    let foo = await conn.getContract(program_id, "Foo.abi");
-    let bar = await conn.getContract(program_id, "Bar.abi");
+    let foo = await conn.getContract(program_id, "out/Foo.abi");
+    let bar = await conn.getContract(program_id, "out/Bar.abi");
 
     await foo.call_constructor(conn, 'Foo', []);
     let foo_address = '0x' + foo.contractStorageAccount.publicKey.toBuffer().toString('hex');
@@ -27,6 +27,7 @@ export async function main() {
 
     await bar.call_constructor(conn, 'Bar', [foo_address]);
     await bar.call_function(conn, 'get_it', []);
-    await bar.call_function(conn, 'get_id', []); // FAILS!
+    // await bar.call_function(conn, 'get_id', [], []); // FAILS!
+    await bar.call_function(conn, 'get_id', [], [foo.contractStorageAccount.publicKey], [], []); // FAILS!
 }
 
